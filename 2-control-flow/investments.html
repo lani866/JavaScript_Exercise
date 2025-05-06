@@ -40,11 +40,32 @@
 
     <hr>
     <h2>Part 3</h2>
-    <p>Create your own HTML interface that will allow the user to run their own simulation as described in Part 2.
-        The interface should allow the user to input values for the initial balance, desired ending balance, mean, and standard deviation.
-        The interface should include a button, that when clicked should perform the simulation and
-        and display the resulting number of years and actual ending balance on the page.
-    </p>
+    <p><label>
+        Initial Balance: $
+        <input id="input-initial" type="number" value="150000" step="any">
+      </label>
+      <br>
+      <label>
+        Desired Balance: $
+        <input id="input-target" type="number" value="1000000" step="any">
+      </label>
+      <br>
+      <label>
+        Mean Return (%):
+        <input id="input-mean" type="number" value="8" step="any">
+      </label>
+      <br>
+      <label>
+        Std. Dev. (%):
+        <input id="input-std" type="number" value="15" step="any">
+      </label>
+      <br>
+      <button id="run-sim">Run Simulation</button>
+  
+      <div class="results" style="margin-top:1em;">
+        <p>Years to Target: <span id="output-years">–</span></p>
+        <p>Ending Balance: <span id="output-balance">–</span></p>
+      </div>
 
 
 
@@ -93,9 +114,47 @@
         console.log(year, formatUSD(balance))
     
 
-
         console.log("---------------------")
         console.log("PART 3...")
+
+        const inpInit   = document.getElementById('input-initial');
+        const inpTarget = document.getElementById('input-target');
+        const inpMean   = document.getElementById('input-mean');
+        const inpStd    = document.getElementById('input-std');
+        const btnRun    = document.getElementById('run-sim');
+
+        const outYears  = document.getElementById('output-years');
+        const outBal    = document.getElementById('output-balance');
+
+        btnRun.addEventListener('click', () => {
+    
+          let balance  = parseFloat(inpInit.value);
+          const target = parseFloat(inpTarget.value);
+          const mean   = parseFloat(inpMean.value) / 100;  
+          const std    = parseFloat(inpStd.value)  / 100;  
+
+          if (isNaN(balance) || isNaN(target) || isNaN(mean) || isNaN(std)) {
+            alert('Please fill in all fields with valid numbers.');
+            return;
+          }
+
+          const randNorm = d3.randomNormal(mean, std);
+
+        
+          let years = 0;
+          while (balance < target) {
+            const rate = randNorm();               
+            console.log(`Year ${years+1}: ${(rate*100).toFixed(2)}%`);
+            balance *= (1 + rate);
+            years++;
+          }
+
+          console.log(`Reached $${target.toLocaleString()} in ${years} years. Final: ${formatUSD(balance)}`);
+
+        
+          outYears.textContent   = years;
+          outBal.textContent     = formatUSD(balance);
+        });
 
 
 
