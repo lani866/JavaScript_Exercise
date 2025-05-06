@@ -87,19 +87,57 @@
 
         var requestUrl = `https://www.alphavantage.co/query?function=MARKET_STATUS&apikey=${apiKey}`
         d3.json(requestUrl).then(function(data) {
+            const markets = data.markets;
+            
             console.log("RESPONSE:", data)
-
             console.log("---------------------")
             console.log("PART 1...")
 
+// A) (fetch already happened via d3.json)
+console.log("A) Fetched market status data");
 
+// B) Display total number of markets
+console.log("B) Number of markets:", markets.length);
 
+// C) Filter for equities
+const equityMarkets = markets.filter(m => m.market_type === "Equity");
+console.log("C) equityMarkets:", equityMarkets);
+
+// D) Number of equity markets
+console.log("D) Number of equity markets:", equityMarkets.length);
+
+// E) List each equity market’s type & region
+equityMarkets.forEach(m => {
+  console.log(`E) ${m.market_type} — ${m.region}`);
+});
+
+// F) Find the U.S. equity market
+const market = equityMarkets.find(m => m.region === "United States");
+console.log("F) U.S. Market Object:", market);
+
+// G) Display U.S. market details
+console.log("G) U.S. Market Type:", market.market_type);
+console.log("G) Primary Exchanges:", market.primary_exchanges);
+console.log("G) Local Open:", market.local_open);
+console.log("G) Local Close:", market.local_close);
+console.log("G) Current Status:", market.current_status.toUpperCase());
 
 
             console.log("---------------------")
             console.log("PART 2...")
 
-
+            var displayRegion = document.getElementById("display-region")
+            var displayType = document.getElementById("display-type")
+            var displayExchanges = document.getElementById("display-exchanges")
+            var displayOpen = document.getElementById("display-open")
+            var displayClose = document.getElementById("display-close")
+            var displayStatus = document.getElementById("display-status")
+            displayRegion.innerText = market.region
+            displayType.innerText = market.market_type
+            displayExchanges.innerText = market.primary_exchanges
+            displayOpen.innerText = market.local_open
+            displayClose.innerText = market.local_close
+            displayStatus.innerText = market.current_status.toUpperCase()
 
 
         }).catch(function(error) {

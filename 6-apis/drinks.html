@@ -64,26 +64,60 @@
     <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
     <script type="text/javascript">
 
-        var requestUrl = "TODO"
+        var requestUrl = "https://www.thecocktaildb.com/api/json/v1/1/filter.php?a=Non_Alcoholic";
 
         d3.json(requestUrl).then(function(data){
-            console.log("DATA:", data)
-
-
+            var drinks = data.drinks;
+            
             console.log("---------------------")
             console.log("PART 1...")
 
+            // B) 
+        console.log("A) requestUrl:", requestUrl);
 
+            // C) Number of drinks
+            console.log("C) Number of non-alcoholic drinks:", drinks.length);
 
+            // D) Name and unique ID of each
+            drinks.forEach(drink => {
+                console.log(`D) ${drink.strDrink} (ID: ${drink.idDrink})`);
+            });
 
 
             console.log("---------------------")
             console.log("PART 2...")
 
+            // — Part 2A — display count in the <span>
+        document.getElementById("display-drinks-count").textContent = drinks.length;
 
+    const container = document.getElementById("display-drinks");
+    container.innerHTML = "";
 
+    drinks.forEach(drink => {
+  
+    const card = document.createElement("div");
+    card.style.display = "inline-block";
+    card.style.margin = "8px";
+    card.style.textAlign = "center";
 
-        })
+    // name
+    const p = document.createElement("p");
+    p.textContent = drink.strDrink;
+    card.appendChild(p);
+
+    // image
+    const img = document.createElement("img");
+    img.src = drink.strDrinkThumb;
+    img.alt = drink.strDrink;
+    img.height = 100;         
+    card.appendChild(img);
+
+    container.appendChild(card);
+});
+})
+.catch(error => {
+console.error("Error fetching drinks:", error);
+});
 
     </script>
 </body>
