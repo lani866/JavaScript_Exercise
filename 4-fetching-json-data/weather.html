@@ -115,8 +115,53 @@
                 console.log("---------------------")
                 console.log("PART 2...")
 
+// A) Display the generated-at date
+const rawDate = data.properties.generatedAt;        
+const displayDate = rawDate.split("T")[0];          
+document.getElementById("display-date").textContent = displayDate;
 
+const table = document.getElementById("display-forecast");
+table.innerHTML = "";
 
+//table creation
+const headerRow = document.createElement("tr");
+["Period", "Temperature", "Forecast", "Icon"].forEach(colName => {
+  const th = document.createElement("th");
+  th.textContent = colName;
+  headerRow.appendChild(th);
+});
+table.appendChild(headerRow);
+
+// row management
+daytimePeriods.forEach(period => {
+  const tr = document.createElement("tr");
+
+  // Period name
+  let td = document.createElement("td");
+  td.textContent = period.name;
+  tr.appendChild(td);
+
+  // Temperature + unit
+  td = document.createElement("td");
+  td.textContent = period.temperature + degreeSymbol + period.temperatureUnit;
+  tr.appendChild(td);
+
+  // Short forecast
+  td = document.createElement("td");
+  td.textContent = period.shortForecast;
+  tr.appendChild(td);
+
+  // Icon image
+  td = document.createElement("td");
+  const img = document.createElement("img");
+  img.src = period.icon;
+  img.alt = period.shortForecast;
+  img.style.width = "50px"; 
+  td.appendChild(img);
+  tr.appendChild(td);
+
+  table.appendChild(tr);
+});
 
             })
             .catch(err => console.log(err))

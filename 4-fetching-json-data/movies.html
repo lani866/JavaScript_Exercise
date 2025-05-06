@@ -78,24 +78,67 @@
 
         var requestUrl = "https://raw.githubusercontent.com/prof-rossetti/internet-technologies/refs/heads/main/data/hp-movies.json"
 
-        fetch(requestUrl).then(response => response.json())
-            .then(function(data){
-                console.log("DATA", data)
-
+        fetch(requestUrl)
+        .then(response => response.json())
+        .then(function(data){
 
                 console.log("---------------------")
                 console.log("PART 1...")
-
-
-
-
+    
+    console.log(`B) Number of movies: ${data.length}`);
+     data.forEach(m => console.log(`${m.Title} (${m.Year})`));
+     const top = data.reduce((b, c) => c.Rating > b.Rating ? c : b);
+     console.log(`D) Highest rated: ${top.Title}`);
 
 
                 console.log("---------------------")
                 console.log("PART 2...")
 
+// ——— Part 2 ———
+const movies = data;
 
+// A) P
+const selectEl = document.getElementById("select-movie");
+movies.forEach(movie => {
+  const opt = document.createElement("option");
+  opt.value = movie.Id;           // movie identifier
+  opt.textContent = movie.Title;  // movie title
+  selectEl.appendChild(opt);
+});
 
+// B) 
+function updateMovieInfo() {
+  const selectedId = selectEl.value;
+  const movie = movies.find(m => m.Id === selectedId);
+
+  const titleEl = document.getElementById("display-title");
+  const yearEl  = document.getElementById("display-year");
+  const ratingEl= document.getElementById("display-rating");
+  const imgCont = document.getElementById("image-container");
+
+  if (!movie) {
+    titleEl.textContent   = "—";
+    yearEl.textContent    = "—";
+    ratingEl.textContent  = "—";
+    imgCont.innerHTML      = "";
+    return;
+  }
+
+  titleEl.textContent   = movie.Title;
+  yearEl.textContent    = movie.Year;
+  ratingEl.textContent  = movie.Rating;
+
+  imgCont.innerHTML = "";        
+  const img = document.createElement("img");
+  img.src = movie["Thumbnail Image URL"];
+  img.alt = movie.Title;
+  imgCont.appendChild(img);
+}
+
+// C)
+selectEl.addEventListener("change", updateMovieInfo);
+
+updateMovieInfo();
 
 
             })
