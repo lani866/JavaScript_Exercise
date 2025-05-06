@@ -90,7 +90,26 @@
                 console.log("---------------------")
                 console.log("PART 1...")
 
+         //B//       
+                console.log("DATE:", data.properties.generatedAt)
 
+         //C//       
+                console.log("PERIODS:", data.properties.periods.length)
+        
+        //D,E//
+                var daytimePeriods = data.properties.periods.filter(function(period){
+                    return period.isDaytime == true
+                })
+                console.log("DAYTIME PERIODS:", daytimePeriods.length)
+
+        //F//
+                daytimePeriods.forEach(function(p) {
+                //console.log("----")
+                //console.log(p)
+                //console.log(p.name, p.temperature, p.temperatureUnit)
+                console.log(p.name, p.temperature + degreeSymbol + p.temperatureUnit)
+                console.log(p. shortForecast)
+                })      
 
 
                 console.log("---------------------")
