@@ -94,16 +94,77 @@
             console.log("---------------------")
             console.log("PART 1...")
 
+// A) 
+    var symbol = "NFLX";
+    console.log("A) Symbol:", symbol);
+
+// B) 
+console.log("B) Request URL:", requestUrl);
+
+// D) 
+console.log("D) Number of days:", data.length);
+
+const sorted = data
+  .slice()   // copy so we don’t mutate `data`
+  .sort((a, b) =>
+    new Date(a.timestamp) - new Date(b.timestamp)
+  );
+
+const earliest = sorted[0];
+const latest   = sorted[sorted.length - 1];
+
+// E) Earliest day & adjusted close
+console.log(
+  `E) Earliest: ${earliest.timestamp} ` +
+  `(${formatUSD(parseFloat(earliest.adjusted_close))})`
+);
+
+// F) Latest day & adjusted close
+console.log(
+  `F) Latest:   ${latest.timestamp} ` +
+  `(${formatUSD(parseFloat(latest.adjusted_close))})`
+);
+
+// G) Percent change from earliest to latest
+const change = (
+  parseFloat(latest.adjusted_close) -
+  parseFloat(earliest.adjusted_close)
+) / parseFloat(earliest.adjusted_close);
+
+console.log("G) Percent change:", formatPct(change));
 
 
+  d3.csv(requestUrl).then(function(data) {
+    console.log("---------------------");
+    console.log("PART 2...");
 
+    const sorted = data
+      .slice()
+      .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+    const earliest = sorted[0];
+    const latest   = sorted[sorted.length - 1];
 
-            console.log("---------------------")
-            console.log("PART 2...")
+    const change = (
+      parseFloat(latest.adjusted_close) -
+      parseFloat(earliest.adjusted_close)
+    ) / parseFloat(earliest.adjusted_close);
 
+    document.getElementById("display-symbol").textContent =
+      symbol;
 
+    document.getElementById("display-earliest").textContent =
+      `${earliest.timestamp} (${formatUSD(parseFloat(earliest.adjusted_close))})`;
 
+    document.getElementById("display-latest").textContent =
+      `${latest.timestamp} (${formatUSD(parseFloat(latest.adjusted_close))})`;
 
+    document.getElementById("display-pct-change").textContent =
+      formatPct(change);
+
+  })
+  .catch(function(error) {
+    console.error("ERROR:", error);
+  });
 
 
             }).catch(function(error) {
