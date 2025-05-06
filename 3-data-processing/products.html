@@ -61,17 +61,49 @@
 
         console.log("---------------------")
         console.log("PART 1...")
+//A//
+        console.log("A) Total products:", products.length);
 
-
-
+//B//
+        products.forEach(product => {
+            console.log(`B) ${product.name} - $${product.price.toFixed(2)}`);
+        });
+//C//
+        var matchingProducts = products.filter(product => product.price < 50);
+//D//
+        console.log("D) Matching products count:", matchingProducts.length);
 
 
 
         console.log("---------------------")
         console.log("PART 2...")
+        const container = document.getElementById('display-products');
 
+        products.forEach(product => {
+            const prodDiv = document.createElement('div');
 
+            const nameP = document.createElement('p');
+            nameP.innerText = product.name;
+            prodDiv.appendChild(nameP);
 
+            const descP = document.createElement('p');
+            descP.innerText = product.description;
+            prodDiv.appendChild(descP);
+
+            const priceP = document.createElement('p');
+            priceP.innerText = `$${product.price.toFixed(2)}`;
+            prodDiv.appendChild(priceP);
+
+            const img = document.createElement('img');
+            img.src = product.imageURL;
+            img.alt = product.name;
+            prodDiv.appendChild(img);
+
+            const hr = document.createElement('hr');
+            prodDiv.appendChild(hr);
+
+            container.appendChild(prodDiv);
+        });
 
     </script>
 </body>
